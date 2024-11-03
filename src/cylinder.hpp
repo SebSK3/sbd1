@@ -13,21 +13,20 @@ class Cylinder {
     double height;
     double GetVolume() const;
 
-
     /* Operators */
-    bool operator>(const Cylinder& other) const {
+    bool operator>(const Cylinder &other) const {
         return GetVolume() > other.GetVolume();
     }
-    bool operator>=(const Cylinder& other) const {
+    bool operator>=(const Cylinder &other) const {
         return GetVolume() >= other.GetVolume();
     }
-    bool operator<(const Cylinder& other) const {
+    bool operator<(const Cylinder &other) const {
         return GetVolume() < other.GetVolume();
     }
-    bool operator<=(const Cylinder& other) const {
+    bool operator<=(const Cylinder &other) const {
         return GetVolume() <= other.GetVolume();
     }
-    bool operator==(const Cylinder& other) const {
+    bool operator==(const Cylinder &other) const {
         return GetVolume() == other.GetVolume();
     }
 };
