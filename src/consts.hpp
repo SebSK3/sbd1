@@ -7,10 +7,11 @@ const double PI = 3.14159265;
 const uint BASE_LENGTH = 4;
 const uint HEIGHT_LENGTH = 4;
 
-const uint RECORD_SIZE = BASE_LENGTH+HEIGHT_LENGTH;
+const uint RECORD_SIZE = BASE_LENGTH + HEIGHT_LENGTH;
+const uint RECORD_COUNT = 4;
 
 // For this to work, PAGE_SIZE needs to be at least the size of RECORD_SIZE
-const uint PAGE_SIZE = RECORD_SIZE*4;
+const uint PAGE_SIZE = RECORD_SIZE * RECORD_COUNT;
 
 const std::string TAPE_NAME = "Main_Tape.txt";
 const std::string TAPE1_NAME = "First_Tape.txt";
