@@ -1,7 +1,7 @@
+#include "consts.hpp"
 #include <iostream>
 
-
 int main() {
-    std::cout << "eeoo" << std::endl;
+    std::cout << PI << std::endl;
     return 0;
 }
