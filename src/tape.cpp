@@ -8,7 +8,7 @@ void Tape::add(Cylinder *record) {
 
 bool Tape::isFull() { return current_record >= RECORD_COUNT; }
 
-void Tape::resetPage() {
+void Tape::resetTape() {
     current_record = 0;
     for (uint i = 0; i < RECORD_COUNT; i++) {
         page[i] = nullptr;
@@ -17,6 +17,7 @@ void Tape::resetPage() {
 
 Cylinder *Tape::getRecord(uint record) { return page[record]; }
 
+Cylinder *Tape::getCurrentRecord() { return page[current_record]; }
 
 Cylinder *Tape::next() {
     current_record++;
@@ -28,7 +29,7 @@ Cylinder *Tape::next() {
 bool Tape::checkForFullPage() {
     if (isFull()) {
         save();
-        resetPage();
+        resetTape();
         return true;
     }
     return false;
@@ -50,3 +51,22 @@ void Tape::dump() {
     }
 }
 #endif
+
+bool Tape::isAtEnd() {
+    return current_record >= PAGE_SIZE || page[current_record] == nullptr;
+}
+void Tape::goToStart() {
+    current_record = 0;
+}
+
+void Tape::dumpTapeHere(Tape *tape) {
+    while (!tape->isAtEnd()) {
+        add(tape->getCurrentRecord());
+        tape->next();
+    }
+}
+// void Tape::getNextRecord() {
+
+//     std::fstream file("pliczek.txt", std::ios::read);
+//     file.read(5, 10);
+// }

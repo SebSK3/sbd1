@@ -32,6 +32,10 @@ int main() {
     tape1.dump();
     std::cout << "tape2:\n";
     tape2.dump();
+
+    std::cout << "merged:\n";
+    sorting::merge(tape, tape1, tape2);
+    tape.dump();
 #endif
     return 0;
 }

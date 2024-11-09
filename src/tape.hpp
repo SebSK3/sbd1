@@ -12,11 +12,16 @@ class Tape {
     std::string name;
 
     Cylinder *getRecord(uint record);
+    Cylinder *getCurrentRecord();
     Cylinder *next();
     void add(Cylinder *record);
     void save();
     void load();
-    void resetPage();
+    void resetTape();
+    void dumpTapeHere(Tape *tape);
+
+    void goToStart();
+    bool isAtEnd();
 #ifdef DEBUG
     void dump();
 #endif
