@@ -5,8 +5,8 @@ namespace sorting {
 bool merge(Tape &mainTape, Tape &tape1, Tape &tape2) {
     bool sorted = true;
     mainTape.resetTape();
-    tape1.goToStart();
-    tape2.goToStart();
+    tape1.resetTape();
+    tape2.resetTape();
     Cylinder *lastCylinder = nullptr;
     Cylinder *lastCylinder1 = nullptr;
     Cylinder *lastCylinder2 = nullptr;

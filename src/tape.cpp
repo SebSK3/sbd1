@@ -58,16 +58,16 @@ bool Tape::isAtTapeEnd() {
     return current_record >= TAPE_SIZE || page[current_record] == nullptr;
 }
 
-bool Tape::isAtFileEnd() {
-    return false;
-}
+bool Tape::isAtFileEnd() { return false; }
 void Tape::goToStart() { current_record = 0; }
 
 bool Tape::dumpTapeHere(Tape *tape, Cylinder *lastRecord) {
     bool sorted = true;
     while (!tape->isAtTapeEnd()) {
         Cylinder *record = tape->getCurrentRecord();
-        if (*record < *lastRecord) sorted = false;
+        if (lastRecord != nullptr && *record < *lastRecord)
+            sorted = false;
+        lastRecord = record;
         add(record);
         tape->next();
     }
