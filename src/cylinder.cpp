@@ -1,3 +1,16 @@
 #include "cylinder.hpp"
 
 double Cylinder::GetVolume() const { return PI * base * base * height; }
+
+
+std::string Cylinder::serializeBase() {
+        std::ostringstream oss;
+        oss << std::setw(BASE_LENGTH) << std::setfill('0') << base;
+        return oss.str();
+}
+
+std::string Cylinder::serializeHeight() {
+        std::ostringstream oss;
+        oss << std::setw(HEIGHT_LENGTH) << std::setfill('0') << height;
+        return oss.str();
+}

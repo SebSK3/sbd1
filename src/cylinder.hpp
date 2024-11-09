@@ -2,6 +2,9 @@
 
 #include "consts.hpp"
 #include <iostream>
+#include <string>
+#include <iomanip>
+#include <sstream>
 /*
  * 29. File records: Right circular cylinders - the radius of the base and the
  * height of the cylinder. Sorting by volume.
@@ -12,6 +15,9 @@ class Cylinder {
     int base;
     int height;
     double GetVolume() const;
+
+    std::string serializeBase();
+    std::string serializeHeight();
 
     /* Operators */
     bool operator>(const Cylinder &other) const {

@@ -51,9 +51,8 @@ void Tape::save() {
     file.seekg(current_page * PAGE_SIZE);
     for (int i = 0; i < TAPE_SIZE; i++) {
         if (page[i] != nullptr) {
-            std::cout << Helpers::serialize(page[i]->base, BASE_LENGTH) << std::endl;
-            file.write(std::to_string(page[i]->base).c_str(), BASE_LENGTH);
-            file.write(std::to_string(page[i]->height).c_str(), HEIGHT_LENGTH);
+            file.write(page[i]->serializeBase().c_str(), BASE_LENGTH);
+            file.write(page[i]->serializeHeight().c_str(), HEIGHT_LENGTH);
         }
     }
     file.close();
@@ -70,7 +69,7 @@ void Tape::load() {
     current_record = 0;
 
     Cylinder *cyl = new Cylinder;
-    auto readRecords = std::min(PAGE_SIZE, readBytes);
+    auto readRecords = std::min(PAGE_SIZE+1, readBytes+1);
     for (int i = 1; i < readRecords; i++) {
         builder += bytes[i - 1];
         if (i % BASE_LENGTH == 0 && isBase) {
