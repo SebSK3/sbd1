@@ -4,7 +4,7 @@
 namespace sorting {
 bool merge(Tape &mainTape, Tape &tape1, Tape &tape2) {
     bool sorted = true;
-    mainTape.resetTape();
+    mainTape.reset();
     tape1.resetTape();
     tape2.resetTape();
     Cylinder *lastCylinder = nullptr;
@@ -47,8 +47,8 @@ bool merge(Tape &mainTape, Tape &tape1, Tape &tape2) {
 
 void distribute(Tape &mainTape, Tape &tape1, Tape &tape2) {
     // mainTape.resetPage();
-    tape1.resetTape();
-    tape2.resetTape();
+    tape1.reset();
+    tape2.reset();
     Cylinder *lastCylinder = nullptr;
     bool tapeSwitch = true;
     for (int i = 0; i < RECORD_COUNT; i++) {
@@ -56,7 +56,7 @@ void distribute(Tape &mainTape, Tape &tape1, Tape &tape2) {
         if (cylinder == nullptr)
             break;
 
-        if (cylinder < lastCylinder) {
+        if (lastCylinder != nullptr && *cylinder < *lastCylinder) {
             tapeSwitch = !tapeSwitch;
         }
 
@@ -71,8 +71,10 @@ void distribute(Tape &mainTape, Tape &tape1, Tape &tape2) {
 
 void sort(Tape &mainTape) {
     Tape tape1, tape2;
-    tape1.resetTape();
-    tape2.resetTape();
+    tape1.name = TAPE1_NAME;
+    tape2.name = TAPE2_NAME;
+    tape1.reset();
+    tape2.reset();
     Cylinder *lastCylinder = nullptr;
     Cylinder *lastCylinder1 = nullptr, *lastCylinder2 = nullptr;
     bool sorted = false;

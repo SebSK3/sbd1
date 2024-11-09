@@ -10,7 +10,7 @@ const uint HEIGHT_LENGTH = 4;
 const uint RECORD_SIZE = BASE_LENGTH + HEIGHT_LENGTH;
 
 // For this to work, PAGE_SIZE needs to be at least the size of RECORD_COUNT
-const uint PAGE_SIZE = 32;
+const long PAGE_SIZE = 32;
 
 const uint TAPE_SIZE = PAGE_SIZE/RECORD_SIZE;
 

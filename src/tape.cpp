@@ -9,7 +9,18 @@ void Tape::add(Cylinder *record) {
 bool Tape::isFull() { return current_record >= TAPE_SIZE; }
 
 void Tape::resetTape() {
+    save();
     current_record = 0;
+    current_page = 0;
+    for (uint i = 0; i < TAPE_SIZE; i++) {
+        page[i] = nullptr;
+    }
+    load();
+}
+
+void Tape::reset() {
+    current_record = 0;
+    current_page = 0;
     for (uint i = 0; i < TAPE_SIZE; i++) {
         page[i] = nullptr;
     }
@@ -36,10 +47,48 @@ bool Tape::checkForFullPage() {
 }
 
 void Tape::save() {
+    file.open(name, std::ios::out);
+    file.seekg(current_page * PAGE_SIZE);
     for (int i = 0; i < TAPE_SIZE; i++) {
-        if (page[i] != nullptr)
-            std::cout << page[i]->GetVolume() << " ++ ";
+        if (page[i] != nullptr) {
+            std::cout << Helpers::serialize(page[i]->base, BASE_LENGTH) << std::endl;
+            file.write(std::to_string(page[i]->base).c_str(), BASE_LENGTH);
+            file.write(std::to_string(page[i]->height).c_str(), HEIGHT_LENGTH);
+        }
     }
+    file.close();
+}
+
+void Tape::load() {
+    file.open(name, std::ios::in);
+    file.seekg(current_page * PAGE_SIZE);
+    char bytes[PAGE_SIZE];
+    file.read(bytes, PAGE_SIZE);
+    auto readBytes = file.gcount();
+    std::string builder;
+    bool isBase = true;
+    current_record = 0;
+
+    Cylinder *cyl = new Cylinder;
+    auto readRecords = std::min(PAGE_SIZE, readBytes);
+    for (int i = 1; i < readRecords; i++) {
+        builder += bytes[i - 1];
+        if (i % BASE_LENGTH == 0 && isBase) {
+            cyl->base = std::stoi(builder);
+            builder = "";
+            isBase = false;
+        } else if (i % HEIGHT_LENGTH == 0 && !isBase) {
+            cyl->height = std::stoi(builder);
+            builder = "";
+            isBase = true;
+            add(cyl);
+            cyl = new Cylinder;
+        }
+    }
+
+    current_record = 0;
+    std::cout << std::endl;
+    file.close();
 }
 
 #ifdef DEBUG

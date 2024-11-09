@@ -2,6 +2,8 @@
 
 #include "consts.hpp"
 #include "cylinder.hpp"
+
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -18,6 +20,7 @@ class Tape {
     void save();
     void load();
     void resetTape();
+    void reset();
     bool dumpTapeHere(Tape *tape, Cylinder *lastRecord);
 
     void goToStart();
@@ -30,6 +33,7 @@ class Tape {
   private:
     std::fstream file;
     uint current_record = 0;
+    uint current_page = 0;
     Cylinder *page[TAPE_SIZE];
     bool checkForFullPage();
     bool isFull();

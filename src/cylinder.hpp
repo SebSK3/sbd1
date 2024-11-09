@@ -9,8 +9,8 @@
 
 class Cylinder {
   public:
-    double base;
-    double height;
+    int base;
+    int height;
     double GetVolume() const;
 
     /* Operators */

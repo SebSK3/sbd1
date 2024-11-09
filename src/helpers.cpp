@@ -4,7 +4,8 @@
 #include <iostream>
 
 namespace Helpers {
-    bool saveToFile(std::fstream *file) {
-        return true;
+    std::string serialize(int num, int width) {
+        oss << std::setw(width) << std::setfill('0') << number;
+        return oss.str();
     }
 }
