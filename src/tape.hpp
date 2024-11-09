@@ -21,15 +21,16 @@ class Tape {
     void dumpTapeHere(Tape *tape);
 
     void goToStart();
-    bool isAtEnd();
+    bool isAtTapeEnd();
+    bool isAtFileEnd();
 #ifdef DEBUG
     void dump();
 #endif
 
   private:
     std::fstream file;
-    uint current_record;
-    Cylinder *page[RECORD_COUNT];
+    uint current_record = 0;
+    Cylinder *page[TAPE_SIZE];
     bool checkForFullPage();
     bool isFull();
 };

@@ -6,11 +6,11 @@ void Tape::add(Cylinder *record) {
     current_record++;
 }
 
-bool Tape::isFull() { return current_record >= RECORD_COUNT; }
+bool Tape::isFull() { return current_record >= TAPE_SIZE; }
 
 void Tape::resetTape() {
     current_record = 0;
-    for (uint i = 0; i < RECORD_COUNT; i++) {
+    for (uint i = 0; i < TAPE_SIZE; i++) {
         page[i] = nullptr;
     }
 }
@@ -36,13 +36,15 @@ bool Tape::checkForFullPage() {
 }
 
 void Tape::save() {
-    for (int i = 0; i < RECORD_COUNT; i++) {
+    for (int i = 0; i < TAPE_SIZE; i++) {
+        if (page[i] != nullptr)
+            std::cout << page[i]->GetVolume() << " ++ ";
     }
 }
 
 #ifdef DEBUG
 void Tape::dump() {
-    for (int i = 0; i < RECORD_COUNT; i++) {
+    for (int i = 0; i < TAPE_SIZE; i++) {
         if (page[i] != nullptr)
             std::cout << *page[i] << std::endl;
         else {
@@ -52,15 +54,17 @@ void Tape::dump() {
 }
 #endif
 
-bool Tape::isAtEnd() {
-    return current_record >= PAGE_SIZE || page[current_record] == nullptr;
-}
-void Tape::goToStart() {
-    current_record = 0;
+bool Tape::isAtTapeEnd() {
+    return current_record >= TAPE_SIZE || page[current_record] == nullptr;
 }
 
+bool Tape::isAtFileEnd() {
+    return false;
+}
+void Tape::goToStart() { current_record = 0; }
+
 void Tape::dumpTapeHere(Tape *tape) {
-    while (!tape->isAtEnd()) {
+    while (!tape->isAtTapeEnd()) {
         add(tape->getCurrentRecord());
         tape->next();
     }

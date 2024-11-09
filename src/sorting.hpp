@@ -17,7 +17,7 @@ void merge(Tape &mainTape, Tape &tape1, Tape &tape2) {
     Cylinder *cylinder1, *cylinder2;
     bool tape1Finished=false, tape2Finished=false;
 
-    while (!tape1.isAtEnd() || !tape2.isAtEnd()) {
+    while (!tape1.isAtTapeEnd() || !tape2.isAtTapeEnd()) {
         cylinder1 = tape1.getCurrentRecord();
         cylinder2 = tape2.getCurrentRecord();
         if (cylinder1 == nullptr) tape1Finished = true;
