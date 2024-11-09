@@ -10,7 +10,7 @@ class Tape {
   public:
     std::string name;
 
-    Cylinder *getRecord();
+    Cylinder *getRecord(uint record);
     Cylinder* next();
     void add(Cylinder *record);
 
@@ -20,7 +20,7 @@ class Tape {
     Cylinder* page[RECORD_COUNT];
     void save();
     void load();
-    void checkForFullPage();
+    bool checkForFullPage();
     void resetPage();
     bool isFull();
 };

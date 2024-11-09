@@ -15,8 +15,8 @@ void Tape::resetPage() {
     }
 }
 
-Cylinder *Tape::getRecord() {
-    return page[current_record];
+Cylinder *Tape::getRecord(uint record) {
+    return page[record];
 }
 
 Cylinder *Tape::next() {
@@ -25,10 +25,13 @@ Cylinder *Tape::next() {
     return page[current_record];
 }
 
-void Tape::checkForFullPage() {
+bool Tape::checkForFullPage() {
     if (isFull()) {
         save();
         resetPage();
+        return true;
     }
+    return false;
 }
+
 void Tape::save() {}
