@@ -1,6 +1,7 @@
 #include "consts.hpp"
 #include "cylinder.hpp"
 #include "tape.hpp"
+#include "sorting.hpp"
 #include <iostream>
 
 int main() {
@@ -19,8 +20,18 @@ int main() {
     std::cout << (cyl1 > cyl2) << std::endl;
     Tape tape;
     tape.add(&cyl1);
+    tape.add(&cyl2);
+    tape.add(&cyl3);
+    tape.add(&cyl4);
+    Tape tape1;
+    Tape tape2;
+    sorting::distribute(tape, tape1, tape2);
 #ifdef DEBUG
     tape.dump();
+    std::cout << "tape1:\n";
+    tape1.dump();
+    std::cout << "tape2:\n";
+    tape2.dump();
 #endif
     return 0;
 }

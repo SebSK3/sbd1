@@ -7,7 +7,7 @@ void sort() {
 }
 
 void distribute(Tape &mainTape, Tape &tape1, Tape &tape2) {
-    mainTape.resetPage();
+    // mainTape.resetPage();
     tape1.resetPage();
     tape2.resetPage();
     Cylinder *lastCylinder = nullptr;
