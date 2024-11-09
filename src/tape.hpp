@@ -18,7 +18,7 @@ class Tape {
     void save();
     void load();
     void resetTape();
-    void dumpTapeHere(Tape *tape);
+    bool dumpTapeHere(Tape *tape, Cylinder *lastRecord);
 
     void goToStart();
     bool isAtTapeEnd();

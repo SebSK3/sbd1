@@ -31,20 +31,11 @@ int main() {
     tape.add(&cyl4);
     tape.add(&cyl5);
     RECORD_COUNT = 5;
-    Tape tape1;
-    tape1.resetTape();
-    Tape tape2;
-    tape2.resetTape();
-    sorting::distribute(tape, tape1, tape2);
-#ifdef DEBUG
-    tape.dump();
-    std::cout << "tape1:\n";
-    tape1.dump();
-    std::cout << "tape2:\n";
-    tape2.dump();
 
-    std::cout << "merged:\n";
-    sorting::merge(tape, tape1, tape2);
+#ifdef DEBUG
+
+    sorting::sort(tape);
+    std::cout << "sorted:\n";
     tape.dump();
 #endif
     return 0;
