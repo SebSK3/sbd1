@@ -29,4 +29,8 @@ class Cylinder {
     bool operator==(const Cylinder &other) const {
         return GetVolume() == other.GetVolume();
     }
+    friend std::ostream &operator<<(std::ostream &os, const Cylinder &cyl) {
+        os << cyl.GetVolume();
+        return os;
+    }
 };

@@ -15,13 +15,13 @@ void Tape::resetPage() {
     }
 }
 
-Cylinder *Tape::getRecord(uint record) {
-    return page[record];
-}
+Cylinder *Tape::getRecord(uint record) { return page[record]; }
+
 
 Cylinder *Tape::next() {
     current_record++;
-    checkForFullPage();
+    if (checkForFullPage())
+        return nullptr;
     return page[current_record];
 }
 
@@ -34,4 +34,19 @@ bool Tape::checkForFullPage() {
     return false;
 }
 
-void Tape::save() {}
+void Tape::save() {
+    for (int i = 0; i < RECORD_COUNT; i++) {
+    }
+}
+
+#ifdef DEBUG
+void Tape::dump() {
+    for (int i = 0; i < RECORD_COUNT; i++) {
+        if (page[i] != nullptr)
+            std::cout << *page[i] << std::endl;
+        else {
+            std::cout << "nullptr" << std::endl;
+        }
+    }
+}
+#endif
