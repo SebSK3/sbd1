@@ -4,6 +4,8 @@
 #include "sorting.hpp"
 #include <iostream>
 
+uint RECORD_COUNT;
+
 int main() {
     Cylinder cyl1;
     Cylinder cyl2;
@@ -28,6 +30,7 @@ int main() {
     tape.add(&cyl3);
     tape.add(&cyl4);
     tape.add(&cyl5);
+    RECORD_COUNT = 5;
     Tape tape1;
     tape1.resetTape();
     Tape tape2;

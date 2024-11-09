@@ -8,12 +8,13 @@ const uint BASE_LENGTH = 4;
 const uint HEIGHT_LENGTH = 4;
 
 const uint RECORD_SIZE = BASE_LENGTH + HEIGHT_LENGTH;
-const uint RECORD_COUNT = 5;
 
 // For this to work, PAGE_SIZE needs to be at least the size of RECORD_COUNT
-const uint PAGE_SIZE = 24;
+const uint PAGE_SIZE = 40;
 
-const uint TAPE_SIZE = PAGE_SIZE/RECORD_COUNT;
+const uint TAPE_SIZE = PAGE_SIZE/RECORD_SIZE;
+
+extern uint RECORD_COUNT;
 
 const std::string TAPE_NAME = "Main_Tape.txt";
 const std::string TAPE1_NAME = "First_Tape.txt";
