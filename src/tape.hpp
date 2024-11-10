@@ -20,7 +20,7 @@ class Tape {
     void save();
     bool load();
     void resetTape();
-    void reset();
+    void reset(bool shouldClearFile = false);
     bool dumpTapeHere(Tape *tape, Cylinder *lastRecord);
 
     void goToStart();

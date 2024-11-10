@@ -1,6 +1,5 @@
 #pragma once
 #include "tape.hpp"
-#include <iostream>
 namespace sorting {
 bool merge(Tape &mainTape, Tape &tape1, Tape &tape2) {
     bool sorted = true;
@@ -53,8 +52,8 @@ bool merge(Tape &mainTape, Tape &tape1, Tape &tape2) {
 
 void distribute(Tape &mainTape, Tape &tape1, Tape &tape2) {
     mainTape.reset();
-    tape1.reset();
-    tape2.reset();
+    tape1.reset(true);
+    tape2.reset(true);
     Cylinder *lastCylinder = nullptr;
     mainTape.load();
     Cylinder *cylinder = mainTape.getRecord(0);

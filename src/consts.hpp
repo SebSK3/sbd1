@@ -17,8 +17,8 @@ const uint TAPE_SIZE = PAGE_SIZE/RECORD_SIZE;
 extern uint RECORD_COUNT;
 
 const std::string TAPE_NAME = "Main_Tape.txt";
-const std::string TAPE1_NAME = "First_Tape.txt";
-const std::string TAPE2_NAME = "Second_Tape.txt";
+const std::string TAPE1_NAME = "First_Tape1.txt";
+const std::string TAPE2_NAME = "Second_Tape1.txt";
 
 // std::string serialize() {
 //     return (std::string)base + (std::string)height;

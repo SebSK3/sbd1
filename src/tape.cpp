@@ -18,11 +18,17 @@ void Tape::resetTape() {
     load();
 }
 
-void Tape::reset() {
+void Tape::reset(bool shouldClearFile) {
     current_record = 0;
     current_page = 0;
     for (uint i = 0; i < TAPE_SIZE; i++) {
         page[i] = nullptr;
+    }
+    if (shouldClearFile) {
+        std::fstream file;
+        file.open(name, std::ios::out);
+        file.write("", 0);
+        file.close();
     }
 }
 
@@ -56,11 +62,10 @@ bool Tape::checkForFullPage() {
 }
 
 void Tape::save() {
-    file.open(name, std::ios::in | std::ios::out);
+    file.open(name);
     file.seekg(current_page * PAGE_SIZE);
     for (int i = 0; i < TAPE_SIZE; i++) {
         if (page[i] != nullptr) {
-            std::cout << "WRITING: " << page[i]->serializeBase().c_str() << std::endl;
             file.write(page[i]->serializeBase().c_str(), BASE_LENGTH);
             file.write(page[i]->serializeHeight().c_str(), HEIGHT_LENGTH);
         }
