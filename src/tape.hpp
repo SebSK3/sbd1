@@ -8,9 +8,11 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <memory>
 
 class Tape {
   public:
+    Tape();
     std::string name;
 
     Cylinder *getRecord(uint record);
@@ -19,7 +21,9 @@ class Tape {
     void add(Cylinder *record);
     void save();
     bool load();
+    void nullTape();
     void resetTape();
+    void freeTape();
     void reset(bool shouldClearFile = false);
     bool dumpTapeHere(Tape *tape, Cylinder *lastRecord);
 

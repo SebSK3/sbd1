@@ -1,5 +1,15 @@
 #include "tape.hpp"
 
+Tape::Tape() {
+    nullTape();
+}
+
+void Tape::nullTape() {
+    for (int i = 0; i < TAPE_SIZE; i++) {
+        page[i] = nullptr;
+    }
+}
+
 void Tape::add(Cylinder *record) {
     checkForFullPage();
     page[current_record] = record;
@@ -18,12 +28,19 @@ void Tape::resetTape() {
     load();
 }
 
+void Tape::freeTape() {
+    for (uint i = 0; i < TAPE_SIZE; i++) {
+        if (page[i] != nullptr) {
+            delete page[i];
+        }
+        page[i] = nullptr;
+    }
+}
+
 void Tape::reset(bool shouldClearFile) {
     current_record = 0;
     current_page = 0;
-    for (uint i = 0; i < TAPE_SIZE; i++) {
-        page[i] = nullptr;
-    }
+    freeTape();
     if (shouldClearFile) {
         std::fstream file;
         file.open(name, std::ios::out);
@@ -54,7 +71,7 @@ Cylinder *Tape::next() {
 bool Tape::checkForFullPage() {
     if (isFull()) {
         save();
-        current_record=0;
+        current_record = 0;
         current_page++;
         return true;
     }
@@ -68,6 +85,7 @@ void Tape::save() {
         if (page[i] != nullptr) {
             file.write(page[i]->serializeBase().c_str(), BASE_LENGTH);
             file.write(page[i]->serializeHeight().c_str(), HEIGHT_LENGTH);
+            delete page[i];
         }
         page[i] = nullptr;
     }
@@ -87,9 +105,8 @@ bool Tape::load() {
     std::string builder;
     bool isBase = true;
     current_record = 0;
-
     Cylinder *cyl = new Cylinder;
-    auto readRecords = std::min(PAGE_SIZE+1, readBytes+1);
+    auto readRecords = std::min(PAGE_SIZE + 1, readBytes + 1);
     for (int i = 1; i < readRecords; i++) {
         builder += bytes[i - 1];
         if (i % BASE_LENGTH == 0 && isBase) {
@@ -102,8 +119,12 @@ bool Tape::load() {
             isBase = true;
             add(cyl);
             cyl = new Cylinder;
+            cyl->base = 0;
+            cyl->height = 0;
         }
     }
+    if (cyl->base == 0 && cyl->height == 0)
+        delete cyl;
 
     current_record = 0;
     file.close();

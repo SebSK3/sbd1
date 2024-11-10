@@ -4,8 +4,8 @@ set (CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS_DEBUG  "-g")
 
-file(GLOB source_files CONFIGURE_DEPENDS "src/*.h" "src/*.cpp")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
+file(GLOB source_files CONFIGURE_DEPENDS "src/*.hpp" "src/*.cpp")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
 
 add_executable(sbd1 ${source_files})
 

@@ -47,6 +47,8 @@ bool merge(Tape &mainTape, Tape &tape1, Tape &tape2) {
         sorted = mainTape.dumpTapeHere(&tape2, lastCylinder) && sorted;
     }
     mainTape.save();
+    tape1.nullTape();
+    tape2.nullTape();
     return sorted;
 }
 
