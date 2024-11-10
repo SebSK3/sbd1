@@ -5,6 +5,8 @@ Tape::Tape() {
 }
 
 void Tape::nullTape() {
+    current_record = 0;
+    current_page = 0;
     for (int i = 0; i < TAPE_SIZE; i++) {
         page[i] = nullptr;
     }
@@ -31,7 +33,7 @@ void Tape::resetTape() {
 void Tape::freeTape() {
     for (uint i = 0; i < TAPE_SIZE; i++) {
         if (page[i] != nullptr) {
-            delete page[i];
+            // delete page[i];
         }
         page[i] = nullptr;
     }
@@ -85,7 +87,6 @@ void Tape::save() {
         if (page[i] != nullptr) {
             file.write(page[i]->serializeBase().c_str(), BASE_LENGTH);
             file.write(page[i]->serializeHeight().c_str(), HEIGHT_LENGTH);
-            delete page[i];
         }
         page[i] = nullptr;
     }
@@ -105,7 +106,7 @@ bool Tape::load() {
     std::string builder;
     bool isBase = true;
     current_record = 0;
-    Cylinder *cyl = new Cylinder;
+    Cylinder *cyl = new Cylinder();
     auto readRecords = std::min(PAGE_SIZE + 1, readBytes + 1);
     for (int i = 1; i < readRecords; i++) {
         builder += bytes[i - 1];
@@ -118,7 +119,7 @@ bool Tape::load() {
             builder = "";
             isBase = true;
             add(cyl);
-            cyl = new Cylinder;
+            cyl = new Cylinder();
             cyl->base = 0;
             cyl->height = 0;
         }

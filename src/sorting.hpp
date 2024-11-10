@@ -3,7 +3,7 @@
 namespace sorting {
 bool merge(Tape &mainTape, Tape &tape1, Tape &tape2) {
     bool sorted = true;
-    mainTape.reset();
+    mainTape.nullTape();
     Cylinder *lastCylinder = nullptr;
     Cylinder *lastCylinder1 = nullptr;
     Cylinder *lastCylinder2 = nullptr;
