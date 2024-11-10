@@ -5,8 +5,6 @@ namespace sorting {
 bool merge(Tape &mainTape, Tape &tape1, Tape &tape2) {
     bool sorted = true;
     mainTape.reset();
-    tape1.resetTape();
-    tape2.resetTape();
     Cylinder *lastCylinder = nullptr;
     Cylinder *lastCylinder1 = nullptr;
     Cylinder *lastCylinder2 = nullptr;
@@ -78,6 +76,8 @@ void distribute(Tape &mainTape, Tape &tape1, Tape &tape2) {
 
         cylinder = mainTape.next();
     }
+    tape1.resetTape();
+    tape2.resetTape();
 }
 
 void sort(Tape &mainTape) {
