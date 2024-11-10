@@ -15,7 +15,7 @@ int main() {
     tape.load();
     sorting::sort(tape);
 #ifdef DEBUG
-    tape.dump();
+    // tape.dump();
     // sorting::sort(tape);
     // std::cout << "sorted:\n";
     // tape.dump();

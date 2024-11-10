@@ -127,6 +127,8 @@ void Tape::dump() {
     }
     current_page = remember_page;
     current_record = remember_record;
+    reset();
+    load();
 }
 #endif
 
