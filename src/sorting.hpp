@@ -16,7 +16,14 @@ bool merge(Tape &mainTape, Tape &tape1, Tape &tape2) {
     while (!tape1.isAtTapeEnd() || !tape2.isAtTapeEnd()) {
         cylinder1 = tape1.getCurrentRecord();
         cylinder2 = tape2.getCurrentRecord();
-        if (cylinder1 == nullptr || cylinder2 == nullptr) break;
+        if (cylinder1 == nullptr) {
+            tape1Finished = true;
+            break;
+        }
+        if (cylinder2 == nullptr) {
+            tape2Finished = true;
+            break;
+        }
         if (*cylinder1 > *cylinder2) {
             mainTape.add(cylinder2);
             if (lastCylinder2 != nullptr && *lastCylinder2 > *cylinder2) {
@@ -42,17 +49,19 @@ bool merge(Tape &mainTape, Tape &tape1, Tape &tape2) {
     if (!tape2Finished) {
         sorted = mainTape.dumpTapeHere(&tape2, lastCylinder) && sorted;
     }
+    mainTape.save();
     return sorted;
 }
 
 void distribute(Tape &mainTape, Tape &tape1, Tape &tape2) {
-    // mainTape.resetPage();
+    mainTape.reset();
     tape1.reset();
     tape2.reset();
     Cylinder *lastCylinder = nullptr;
+    mainTape.load();
+    Cylinder *cylinder = mainTape.getRecord(0);
     bool tapeSwitch = true;
-    for (int i = 0; i < RECORD_COUNT; i++) {
-        Cylinder *cylinder = mainTape.getRecord(i);
+    while (!mainTape.isAtFileEnd()) {
         if (cylinder == nullptr)
             break;
 
@@ -66,6 +75,8 @@ void distribute(Tape &mainTape, Tape &tape1, Tape &tape2) {
             tape2.add(cylinder);
         }
         lastCylinder = cylinder;
+
+        cylinder = mainTape.next();
     }
 }
 

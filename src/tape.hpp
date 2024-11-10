@@ -18,7 +18,7 @@ class Tape {
     Cylinder *next();
     void add(Cylinder *record);
     void save();
-    void load();
+    bool load();
     void resetTape();
     void reset();
     bool dumpTapeHere(Tape *tape, Cylinder *lastRecord);
