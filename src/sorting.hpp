@@ -72,7 +72,6 @@ void distribute(Tape *mainTape, Tape *tape1, Tape *tape2) {
     tape2->resetFile();
     Cylinder *lastCylinder = new Cylinder();
     lastCylinder->clear();
-    mainTape->load();
     Cylinder *cylinder = new Cylinder();
     *cylinder = *mainTape->getCurrentRecord();
     bool tapeSwitch = true;

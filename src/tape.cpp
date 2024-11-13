@@ -18,7 +18,6 @@ Tape::~Tape() {
 
 bool Tape::load() {
     resetTape();
-    loads++;
     file.open(name, std::ios::in);
     file.seekg(current_page * PAGE_SIZE);
     char bytes[PAGE_SIZE];
@@ -28,6 +27,8 @@ bool Tape::load() {
         file.close();
         return false;
     }
+
+    loads++;
     std::string builder;
     bool isBase = true;
     current_record = 0;
@@ -55,7 +56,7 @@ bool Tape::load() {
 void Tape::add(int base, int height) {
     if (page[current_record]->exists())
         current_record++;
-    fullPageHandler(true);
+    fullPageHandler(true, false);
     page[current_record]->base = base;
     page[current_record]->height = height;
 }
@@ -81,7 +82,6 @@ void Tape::save() {
 }
 
 bool Tape::dumpRestOfTapeHere(Tape *tape, Cylinder *lastRecord) {
-    // TODO: could be wrong
     bool sorted = true;
     Cylinder *record = new Cylinder();
     while (!tape->isAtFileEnd()) {
@@ -96,13 +96,14 @@ bool Tape::dumpRestOfTapeHere(Tape *tape, Cylinder *lastRecord) {
     return sorted;
 }
 
-bool Tape::fullPageHandler(bool shouldSave) {
+bool Tape::fullPageHandler(bool shouldSave, bool shouldLoad) {
     if (isFull()) {
         if (shouldSave)
             save();
         current_page++;
         current_record = 0;
-        load();
+        if (shouldLoad)
+            load();
         return true;
     }
     return false;
