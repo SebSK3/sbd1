@@ -10,7 +10,7 @@ const uint HEIGHT_LENGTH = 4;
 const uint RECORD_SIZE = BASE_LENGTH + HEIGHT_LENGTH;
 
 // For this to work, PAGE_SIZE needs to be at least the size of RECORD_COUNT
-const long PAGE_SIZE = 32;
+const long PAGE_SIZE = 40;
 
 const uint TAPE_SIZE = PAGE_SIZE/RECORD_SIZE;
 
@@ -20,19 +20,6 @@ const std::string TAPE_NAME = "Main_Tape.txt";
 const std::string TAPE1_NAME = "First_Tape1.txt";
 const std::string TAPE2_NAME = "Second_Tape1.txt";
 
-// std::string serialize() {
-//     return (std::string)base + (std::string)height;
-// }
-
-// Cylinder deserialize(std::string serialized) {
-//     Cylinder cyl;
-//     std::string builder1;
-//     for (int i=0; i<BASE_LENGTH; i++) {
-//         builder1 += serialized[i];
-//     }
-//     cyl.base = stoi(builder1);
-//     for (int i=BASE_LENGTH; i<HEIGHT_LENGTH; i++) {
-//         builder1 += serialized[i];
-//     }
-//     cyl.height = stoi(builder1);
-// }
+#ifdef DEBUG
+const std::string DEBUG_TAPE_NAME = "DEBUG_TAPE.txt";
+#endif

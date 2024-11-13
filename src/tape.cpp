@@ -5,7 +5,7 @@ Tape::Tape(std::string name) {
     for (int i = 0; i < TAPE_SIZE; i++) {
         page[i] = new Cylinder();
     }
-    resetTape();
+    resetPage();
 }
 
 Tape::~Tape() {
@@ -15,6 +15,7 @@ Tape::~Tape() {
 }
 
 bool Tape::load() {
+    resetTape();
     file.open(name, std::ios::in);
     file.seekg(current_page * PAGE_SIZE);
     char bytes[PAGE_SIZE];
@@ -49,18 +50,51 @@ bool Tape::load() {
 }
 
 void Tape::add(int base, int height) {
-    fullPageHandler();
+    if (page[current_record]->exists())
+        current_record++;
+    fullPageHandler(true);
     page[current_record]->base = base;
     page[current_record]->height = height;
-    current_record++;
 }
 
 Cylinder* Tape::next() {
-
+    current_record++;
+    fullPageHandler();
+    return page[current_record];
 }
 
-bool Tape::fullPageHandler() {
+void Tape::save() {
+    file.open(name);
+    file.seekg(current_page * PAGE_SIZE);
+    for (int i = 0; i < TAPE_SIZE; i++) {
+        if (page[i]->exists()) {
+            file.write(page[i]->serializeBase().c_str(), BASE_LENGTH);
+            file.write(page[i]->serializeHeight().c_str(), HEIGHT_LENGTH);
+        }
+        page[i]->clear();
+    }
+    file.close();
+}
+
+bool Tape::dumpTapeHere(Tape *tape, Cylinder *lastRecord) {
+    bool sorted = true;
+    while (!tape->isAtFileEnd) {
+        Cylinder *record = tape->getCurrentRecord();
+        if (lastRecord != nullptr && *record < *lastRecord)
+            sorted = false;
+        lastRecord = record;
+        add(record);
+        tape->next();
+    }
+    return sorted;
+}
+
+bool Tape::fullPageHandler(bool shouldSave) {
     if (isFull()) {
+        if (shouldSave) save();
+        current_page++;
+        current_record = 0;
+        load();
         return true;
     }
     return false;
@@ -71,13 +105,16 @@ bool Tape::isFull() { return current_record >= TAPE_SIZE; }
 void Tape::resetTape() {
     current_record = 0;
     for (int i = 0; i < TAPE_SIZE; i++) {
-        page[i]->base = 0;
-        page[i]->height = 0;
+        page[i]->clear();
     }
 }
 void Tape::resetPage() {
     resetTape();
     current_page = 0;
+}
+
+bool Tape::isAtFileEnd() {
+    return !page[current_record]->exists();
 }
 
 #ifdef DEBUG
@@ -89,6 +126,38 @@ void Tape::dump() {
         }
         std::cout << *page[i] << std::endl;
     }
+}
+
+void Tape::dumpFile() {
+    uint remember_page = current_page;
+    uint remember_record = current_record;
+    current_record = 0;
+    current_page = 0;
+    load();
+    Cylinder *cyl = page[current_record];
+    while (!isAtFileEnd()) {
+        std::cout << *cyl << std::endl;
+        cyl = next();
+    }
+    current_page = remember_page;
+    current_record = remember_record;
+}
+
+void Tape::dumpToFile() {
+    Tape *tempTape = new Tape(DEBUG_TAPE_NAME);
+    uint remember_page = current_page;
+    uint remember_record = current_record;
+    current_record = 0;
+    current_page = 0;
+    load();
+    Cylinder *cyl = page[current_record];
+    while (!isAtFileEnd()) {
+        tempTape->add(cyl->base, cyl->height);
+        cyl = next();
+    }
+    current_page = remember_page;
+    current_record = remember_record;
+    delete tempTape;
 }
 #endif
 

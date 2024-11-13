@@ -9,9 +9,10 @@ uint RECORD_COUNT;
 
 int main() {
     helpers::clearFiles();
+    RECORD_COUNT = 5;
     Tape *mainTape = new Tape(TAPE_NAME);
     mainTape->load();
-    mainTape->dump();
+    mainTape->dumpToFile();
     delete mainTape;
     // mainTape.load();
 

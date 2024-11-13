@@ -17,6 +17,7 @@ class Cylinder {
     double GetVolume() const;
 
     bool exists();
+    void clear();
 
     std::string serializeBase();
     std::string serializeHeight();

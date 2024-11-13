@@ -35,6 +35,7 @@ class Tape {
 #ifdef DEBUG
     void dump();
     void dumpFile();
+    void dumpToFile();
 #endif
 
   private:
@@ -42,6 +43,6 @@ class Tape {
     uint current_record = 0;
     uint current_page = 0;
     Cylinder *page[TAPE_SIZE];
-    bool fullPageHandler();
+    bool fullPageHandler(bool shouldSave = false);
     bool isFull();
 };

@@ -6,6 +6,11 @@ bool Cylinder::exists() {
     return base != 0 && height != 0;
 }
 
+void Cylinder::clear() {
+    base = 0;
+    height = 0;
+}
+
 std::string Cylinder::serializeBase() {
     std::ostringstream oss;
     oss << std::setw(BASE_LENGTH) << std::setfill('0') << base;
