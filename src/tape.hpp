@@ -22,15 +22,12 @@ class Tape {
     void add(int base, int height);
     void save();
     bool load();
-    void nullTape();
+    void resetFile();
     void resetTape();
     void resetPage();
-    void freeTape();
-    void reset(bool shouldClearFile = false);
     bool dumpRestOfTapeHere(Tape *tape, Cylinder *lastRecord);
 
     void goToStart();
-    bool isAtTapeEnd();
     bool isAtFileEnd();
 #ifdef DEBUG
     void dump();

@@ -79,11 +79,12 @@ void Tape::save() {
 bool Tape::dumpRestOfTapeHere(Tape *tape, Cylinder *lastRecord) {
     // TODO: could be wrong
     bool sorted = true;
+    Cylinder *record = new Cylinder();
     while (!tape->isAtFileEnd()) {
         Cylinder *record = tape->getCurrentRecord();
         if (lastRecord->exists() && *record < *lastRecord)
             sorted = false;
-        lastRecord = record;
+        *lastRecord = *record;
         add(record->base, record->height);
         tape->next();
     }
@@ -115,6 +116,19 @@ void Tape::resetTape() {
 void Tape::resetPage() {
     resetTape();
     current_page = 0;
+}
+
+void Tape::resetFile() {
+    std::fstream file;
+    file.open(name, std::ios::out);
+    file.write("", 0);
+    file.close();
+}
+
+void Tape::goToStart() {
+    current_record = 0;
+    current_page = 0;
+    load();
 }
 
 bool Tape::isAtFileEnd() {
