@@ -1,6 +1,8 @@
 #include "tape.hpp"
 
 Tape::Tape(std::string name) {
+    loads = 0;
+    saves = 0;
     this->name = name;
     for (int i = 0; i < TAPE_SIZE; i++) {
         page[i] = new Cylinder();
@@ -16,6 +18,7 @@ Tape::~Tape() {
 
 bool Tape::load() {
     resetTape();
+    loads++;
     file.open(name, std::ios::in);
     file.seekg(current_page * PAGE_SIZE);
     char bytes[PAGE_SIZE];
@@ -65,6 +68,7 @@ Cylinder *Tape::next() {
 
 void Tape::save() {
     file.open(name);
+    saves++;
     file.seekg(current_page * PAGE_SIZE);
     for (int i = 0; i < TAPE_SIZE; i++) {
         if (page[i]->exists()) {
@@ -134,17 +138,6 @@ void Tape::goToStart() {
 
 bool Tape::isAtFileEnd() { return !page[current_record]->exists(); }
 
-#ifdef DEBUG
-void Tape::dump() {
-    for (int i = 0; i < TAPE_SIZE; i++) {
-        if (!page[i]->exists()) {
-            std::cout << "none" << std::endl;
-            continue;
-        }
-        std::cout << *page[i] << std::endl;
-    }
-}
-
 void Tape::dumpFile() {
     uint remember_page = current_page;
     uint remember_record = current_record;
@@ -158,6 +151,17 @@ void Tape::dumpFile() {
     }
     current_page = remember_page;
     current_record = remember_record;
+}
+
+#ifdef DEBUG
+void Tape::dump() {
+    for (int i = 0; i < TAPE_SIZE; i++) {
+        if (!page[i]->exists()) {
+            std::cout << "none" << std::endl;
+            continue;
+        }
+        std::cout << *page[i] << std::endl;
+    }
 }
 
 void Tape::dumpToFile() {

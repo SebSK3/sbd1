@@ -110,6 +110,10 @@ void sort(Tape *mainTape) {
         distribute(mainTape, tape1, tape2);
         sorted = merge(mainTape, tape1, tape2);
     }
+    std::cout << "Loads: " << mainTape->loads + tape1->loads + tape2->loads << std::endl;
+    std::cout << "Writes: " << mainTape->saves + tape1->saves + tape2->saves << std::endl;
+    mainTape->loads = 0;
+    mainTape->saves = 0;
     delete tape1;
     delete tape2;
 }

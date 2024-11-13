@@ -15,6 +15,8 @@ class Tape {
     Tape(std::string name);
     ~Tape();
     std::string name;
+    uint loads;
+    uint saves;
 
     Cylinder *getCurrentRecord();
     Cylinder *next();
@@ -28,9 +30,9 @@ class Tape {
 
     void goToStart();
     bool isAtFileEnd();
+    void dumpFile();
 #ifdef DEBUG
     void dump();
-    void dumpFile();
     void dumpToFile();
 #endif
 

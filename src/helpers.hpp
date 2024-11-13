@@ -4,16 +4,15 @@
 
 namespace helpers {
 void clearFiles() {
-    std::fstream file;
-    file.open(TAPE1_NAME, std::ios::out);
-    file.write("", 0);
+    std::ofstream file;
+    file.open(TAPE_NAME, std::ofstream::out | std::ofstream::trunc);
     file.close();
-    file.open(TAPE2_NAME, std::ios::out);
-    file.write("", 0);
+    file.open(TAPE1_NAME, std::ofstream::out | std::ofstream::trunc);
+    file.close();
+    file.open(TAPE2_NAME, std::ofstream::out | std::ofstream::trunc);
     file.close();
 #ifdef DEBUG
-    file.open(DEBUG_TAPE_NAME, std::ios::out);
-    file.write("", 0);
+    file.open(DEBUG_TAPE_NAME, std::ofstream::out | std::ofstream::trunc);
     file.close();
 #endif
 }
