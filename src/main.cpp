@@ -12,7 +12,8 @@ int main() {
     RECORD_COUNT = 5;
     Tape *mainTape = new Tape(TAPE_NAME);
     mainTape->load();
-    mainTape->dumpToFile();
+
+    sorting::sort(mainTape);
     delete mainTape;
     // mainTape.load();
 

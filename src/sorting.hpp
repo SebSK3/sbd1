@@ -1,6 +1,6 @@
-// #pragma once
-// #include "tape.hpp"
-// namespace sorting {
+#pragma once
+#include "tape.hpp"
+namespace sorting {
 // bool merge(Tape &mainTape, Tape &tape1, Tape &tape2) {
 //     bool sorted = true;
 //     mainTape.nullTape();
@@ -52,47 +52,60 @@
 //     return sorted;
 // }
 
-// void distribute(Tape &mainTape, Tape &tape1, Tape &tape2) {
-//     mainTape.reset();
-//     tape1.reset(true);
-//     tape2.reset(true);
-//     Cylinder *lastCylinder = nullptr;
-//     mainTape.load();
-//     Cylinder *cylinder = mainTape.getRecord(0);
-//     bool tapeSwitch = true;
-//     while (!mainTape.isAtFileEnd()) {
-//         if (cylinder == nullptr)
-//             break;
+void distribute(Tape *mainTape, Tape *tape1, Tape *tape2) {
+    mainTape->resetTape();
+    tape1->resetPage();
+    tape2->resetPage();
+    Cylinder *lastCylinder = new Cylinder();
+    lastCylinder->clear();
+    mainTape->load();
+    // mainTape.reset();
+    // tape1.reset(true);
+    // tape2.reset(true);
+    Cylinder *cylinder = mainTape->getCurrentRecord();
+    bool tapeSwitch = true;
+    while (!mainTape->isAtFileEnd()) {
+        if (!cylinder->exists())
+            break;
 
-//         if (lastCylinder != nullptr && *cylinder < *lastCylinder) {
-//             tapeSwitch = !tapeSwitch;
-//         }
+        if (lastCylinder != nullptr && *cylinder < *lastCylinder) {
+            tapeSwitch = !tapeSwitch;
+        }
 
-//         if (tapeSwitch) {
-//             tape1.add(cylinder);
-//         } else {
-//             tape2.add(cylinder);
-//         }
-//         lastCylinder = cylinder;
+        if (tapeSwitch) {
+            tape1->add(cylinder->base, cylinder->height);
+        } else {
+            tape2->add(cylinder->base, cylinder->height);
+        }
+        lastCylinder->base = cylinder->base;
+        lastCylinder->height = cylinder->height;
 
-//         cylinder = mainTape.next();
-//     }
-//     tape1.resetTape();
-//     tape2.resetTape();
-// }
+        cylinder = mainTape->next();
+    }
+    tape1->save();
+    tape2->save();
+    tape1->resetTape();
+    tape2->resetTape();
+    delete lastCylinder;
+}
 
-// void sort(Tape &mainTape) {
-//     Tape tape1, tape2;
-//     tape1.name = TAPE1_NAME;
-//     tape2.name = TAPE2_NAME;
-//     tape1.reset();
-//     tape2.reset();
-//     Cylinder *lastCylinder = nullptr;
-//     Cylinder *lastCylinder1 = nullptr, *lastCylinder2 = nullptr;
-//     bool sorted = false;
-//     while (!sorted) {
-//         distribute(mainTape, tape1, tape2);
-//         sorted = merge(mainTape, tape1, tape2);
-//     }
-// }
-// } // namespace sorting
+void sort(Tape *mainTape) {
+    Tape *tape1 = new Tape(TAPE1_NAME);
+    Tape *tape2 = new Tape(TAPE2_NAME);
+    bool sorted = false;
+    // while (!sorted) {
+        distribute(mainTape, tape1, tape2);
+        // sorted = merge(mainTape, tape1, tape2);
+    // }
+#ifdef DEBUG
+    std::cout << "maintape: \n";
+    mainTape->dumpFile();
+    std::cout << "tape1: \n";
+    tape1->dumpFile();
+    std::cout << "tape2: \n";
+    tape2->dumpFile();
+#endif
+    delete tape1;
+    delete tape2;
+}
+} // namespace sorting
