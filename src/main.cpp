@@ -9,11 +9,12 @@ uint RECORD_COUNT;
 
 int main() {
     helpers::clearFiles();
-    RECORD_COUNT = 4;
-    Tape tape;
-    tape.name = TAPE_NAME;
-    tape.load();
-    sorting::sort(tape);
+    Tape *mainTape = new Tape(TAPE_NAME);
+    mainTape->load();
+    mainTape->dump();
+    delete mainTape;
+    // mainTape.load();
+
 #ifdef DEBUG
     // tape.dump();
     // sorting::sort(tape);

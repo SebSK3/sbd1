@@ -12,17 +12,19 @@
 
 class Tape {
   public:
-    Tape();
+    Tape(std::string name);
+    ~Tape();
     std::string name;
 
     Cylinder *getRecord(uint record);
     Cylinder *getCurrentRecord();
     Cylinder *next();
-    void add(Cylinder *record);
+    void add(int base, int height);
     void save();
     bool load();
     void nullTape();
     void resetTape();
+    void resetPage();
     void freeTape();
     void reset(bool shouldClearFile = false);
     bool dumpTapeHere(Tape *tape, Cylinder *lastRecord);
@@ -32,6 +34,7 @@ class Tape {
     bool isAtFileEnd();
 #ifdef DEBUG
     void dump();
+    void dumpFile();
 #endif
 
   private:
@@ -39,6 +42,6 @@ class Tape {
     uint current_record = 0;
     uint current_page = 0;
     Cylinder *page[TAPE_SIZE];
-    bool checkForFullPage();
+    bool fullPageHandler();
     bool isFull();
 };
