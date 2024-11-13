@@ -2,9 +2,7 @@
 
 double Cylinder::GetVolume() const { return PI * base * base * height; }
 
-bool Cylinder::exists() {
-    return base != 0 && height != 0;
-}
+bool Cylinder::exists() { return base != 0 && height != 0; }
 
 void Cylinder::clear() {
     base = 0;

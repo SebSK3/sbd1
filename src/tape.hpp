@@ -6,9 +6,9 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 class Tape {
   public:
@@ -16,7 +16,6 @@ class Tape {
     ~Tape();
     std::string name;
 
-    Cylinder *getRecord(uint record);
     Cylinder *getCurrentRecord();
     Cylinder *next();
     void add(int base, int height);

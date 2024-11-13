@@ -57,7 +57,7 @@ void Tape::add(int base, int height) {
     page[current_record]->height = height;
 }
 
-Cylinder* Tape::next() {
+Cylinder *Tape::next() {
     current_record++;
     fullPageHandler();
     return page[current_record];
@@ -94,7 +94,8 @@ bool Tape::dumpRestOfTapeHere(Tape *tape, Cylinder *lastRecord) {
 
 bool Tape::fullPageHandler(bool shouldSave) {
     if (isFull()) {
-        if (shouldSave) save();
+        if (shouldSave)
+            save();
         current_page++;
         current_record = 0;
         load();
@@ -102,7 +103,6 @@ bool Tape::fullPageHandler(bool shouldSave) {
     }
     return false;
 }
-
 
 bool Tape::isFull() { return current_record >= TAPE_SIZE; }
 
@@ -132,9 +132,7 @@ void Tape::goToStart() {
     load();
 }
 
-bool Tape::isAtFileEnd() {
-    return !page[current_record]->exists();
-}
+bool Tape::isAtFileEnd() { return !page[current_record]->exists(); }
 
 #ifdef DEBUG
 void Tape::dump() {
@@ -227,7 +225,6 @@ void Tape::dumpToFile() {
 // }
 
 // Cylinder *Tape::getRecord(uint record) { return page[record]; }
-
 
 // Cylinder *Tape::next() {
 //     current_record++;

@@ -16,7 +16,7 @@ bool merge(Tape *mainTape, Tape *tape1, Tape *tape2) {
     lastCylinder2->clear();
     cylinder1->clear();
     cylinder2->clear();
-    bool tape1Finished=false, tape2Finished=false;
+    bool tape1Finished = false, tape2Finished = false;
     while (!tape1->isAtFileEnd() || !tape2->isAtFileEnd()) {
         *cylinder1 = *tape1->getCurrentRecord();
         *cylinder2 = *tape2->getCurrentRecord();
@@ -110,14 +110,6 @@ void sort(Tape *mainTape) {
         distribute(mainTape, tape1, tape2);
         sorted = merge(mainTape, tape1, tape2);
     }
-// #ifdef DEBUG
-//     std::cout << "maintape: \n";
-//     mainTape->dumpFile();
-//     std::cout << "tape1: \n";
-//     tape1->dumpFile();
-//     std::cout << "tape2: \n";
-//     tape2->dumpFile();
-// #endif
     delete tape1;
     delete tape2;
 }
