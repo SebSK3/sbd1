@@ -92,17 +92,7 @@ void sort(Tape &mainTape) {
     bool sorted = false;
     while (!sorted) {
         distribute(mainTape, tape1, tape2);
-#ifdef DEBUG
-        std::cout << "distributed tape1:\n";
-        tape1.dump();
-        std::cout << "distributed tape2:\n";
-        tape2.dump();
-#endif
         sorted = merge(mainTape, tape1, tape2);
-#ifdef DEBUG
-        std::cout << "merged tape:\n";
-        mainTape.dump();
-#endif
     }
 }
 } // namespace sorting
