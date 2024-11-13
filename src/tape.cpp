@@ -76,14 +76,15 @@ void Tape::save() {
     file.close();
 }
 
-bool Tape::dumpTapeHere(Tape *tape, Cylinder *lastRecord) {
+bool Tape::dumpRestOfTapeHere(Tape *tape, Cylinder *lastRecord) {
+    // TODO: could be wrong
     bool sorted = true;
-    while (!tape->isAtFileEnd) {
+    while (!tape->isAtFileEnd()) {
         Cylinder *record = tape->getCurrentRecord();
-        if (lastRecord != nullptr && *record < *lastRecord)
+        if (lastRecord->exists() && *record < *lastRecord)
             sorted = false;
         lastRecord = record;
-        add(record);
+        add(record->base, record->height);
         tape->next();
     }
     return sorted;
@@ -100,7 +101,10 @@ bool Tape::fullPageHandler(bool shouldSave) {
     return false;
 }
 
+
 bool Tape::isFull() { return current_record >= TAPE_SIZE; }
+
+Cylinder *Tape::getCurrentRecord() { return page[current_record]; }
 
 void Tape::resetTape() {
     current_record = 0;
@@ -155,6 +159,7 @@ void Tape::dumpToFile() {
         tempTape->add(cyl->base, cyl->height);
         cyl = next();
     }
+    tempTape->save();
     current_page = remember_page;
     current_record = remember_record;
     delete tempTape;
@@ -208,7 +213,6 @@ void Tape::dumpToFile() {
 
 // Cylinder *Tape::getRecord(uint record) { return page[record]; }
 
-// Cylinder *Tape::getCurrentRecord() { return page[current_record]; }
 
 // Cylinder *Tape::next() {
 //     current_record++;

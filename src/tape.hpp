@@ -27,7 +27,7 @@ class Tape {
     void resetPage();
     void freeTape();
     void reset(bool shouldClearFile = false);
-    bool dumpTapeHere(Tape *tape, Cylinder *lastRecord);
+    bool dumpRestOfTapeHere(Tape *tape, Cylinder *lastRecord);
 
     void goToStart();
     bool isAtTapeEnd();
