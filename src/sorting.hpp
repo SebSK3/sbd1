@@ -37,7 +37,7 @@ bool merge(Tape *mainTape, Tape *tape1, Tape *tape2) {
             *lastCylinder = *cylinder2;
             tape2->next();
         } else {
-            mainTape->add(cylinder1->base, cylinder2->height);
+            mainTape->add(cylinder1->base, cylinder1->height);
             if (*lastCylinder1 > *cylinder1) {
                 sorted = false;
             }
@@ -61,9 +61,6 @@ bool merge(Tape *mainTape, Tape *tape1, Tape *tape2) {
     mainTape->save();
     tape1->resetPage();
     tape2->resetPage();
-    // mainTape.save();
-    // tape1.nullTape();
-    // tape2.nullTape();
     return sorted;
 }
 
@@ -113,14 +110,14 @@ void sort(Tape *mainTape) {
         distribute(mainTape, tape1, tape2);
         sorted = merge(mainTape, tape1, tape2);
     }
-#ifdef DEBUG
-    std::cout << "maintape: \n";
-    mainTape->dumpFile();
-    std::cout << "tape1: \n";
-    tape1->dumpFile();
-    std::cout << "tape2: \n";
-    tape2->dumpFile();
-#endif
+// #ifdef DEBUG
+//     std::cout << "maintape: \n";
+//     mainTape->dumpFile();
+//     std::cout << "tape1: \n";
+//     tape1->dumpFile();
+//     std::cout << "tape2: \n";
+//     tape2->dumpFile();
+// #endif
     delete tape1;
     delete tape2;
 }

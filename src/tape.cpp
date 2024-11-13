@@ -88,6 +88,7 @@ bool Tape::dumpRestOfTapeHere(Tape *tape, Cylinder *lastRecord) {
         add(record->base, record->height);
         tape->next();
     }
+    delete record;
     return sorted;
 }
 
