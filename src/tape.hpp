@@ -11,7 +11,7 @@
 #include <vector>
 
 class Tape {
-  public:
+public:
     Tape(std::string name);
     ~Tape();
     std::string name;
@@ -36,7 +36,7 @@ class Tape {
     void dumpToFile();
 #endif
 
-  private:
+private:
     std::fstream file;
     uint current_record = 0;
     uint current_page = 0;

@@ -105,12 +105,15 @@ void sort(Tape *mainTape) {
     Tape *tape1 = new Tape(TAPE1_NAME);
     Tape *tape2 = new Tape(TAPE2_NAME);
     bool sorted = false;
+    int phases = 0;
     while (!sorted) {
+        phases++;
         distribute(mainTape, tape1, tape2);
         sorted = merge(mainTape, tape1, tape2);
     }
     std::cout << "Loads: " << mainTape->loads + tape1->loads + tape2->loads << std::endl;
     std::cout << "Writes: " << mainTape->saves + tape1->saves + tape2->saves << std::endl;
+    std::cout << "Phases: " << phases << std::endl;
     mainTape->loads = 0;
     mainTape->saves = 0;
     delete tape1;

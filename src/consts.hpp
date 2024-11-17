@@ -16,7 +16,6 @@ const uint TAPE_SIZE = PAGE_SIZE / RECORD_SIZE;
 
 extern uint RECORD_COUNT;
 
-
 const std::string INPUT_NAME = "input.txt";
 
 const std::string TAPE_NAME = "Main_Tape.txt";
