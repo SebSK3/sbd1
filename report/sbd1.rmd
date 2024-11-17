@@ -1,6 +1,8 @@
 ---
 header-includes:
     - \usepackage{needspace}
+    - \usepackage{float}
+    - \floatplacement{figure}{H}
 title: "Sprawozdanie Struktury Baz Danych Projekt 1"
 author: "Sebastian Kwaśniak"
 date: "`r Sys.Date()`"
@@ -8,7 +10,14 @@ geometry: margin=2cm
 output:
     pdf_document:
         keep_tex: yes
+        extra_dependencies: ["float"]
 ---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(fig.pos = "!H", out.extra = "")
+```
+
+\renewcommand{\figurename}{Rys.}
 
 # Wprowadzenie
 Zaimplementowany przeze mnie algorytm to sortowanie przez scalanie w schemacie 2+1.
@@ -121,3 +130,66 @@ Writes: 16
 
 # Eksperyment
 
+## Implementacja
+
+## Wyniki
+
+Wzór zastosowany do obliczenia operacji dyskowych i faz:
+
+\begin{align}
+T &= \frac{4N\lceil \log_2 r\rceil}{b} \\
+\text{fazy} &= \lceil \log_2r \rceil
+\end{align}
+
+gdzie r - liczba serii
+
+Dla wielkości strony: TODO: 
+
+| N | Liczba serii | IO | Fazy | Teor. IO | Teor. fazy |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| 10 | 5 | 12 | 2 | 12 | 3 |
+
+Dla wielkości strony: TODO:
+
+| N | Liczba serii | IO | Fazy | Teor. IO | Teor. fazy |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| 10 | 5 | 12 | 2 | 12 | 3 |
+
+Jak widać, dla większej ilości strony, tym rzadziej ją wymieniamy,
+przez co znacznie spadają ilości operacji dyskowych.
+Gdy $N$ jest mniejsze niż rozmiar strony, to nie ma różnicy
+spowodowanej rozmiarem bloków, bo do zapisu wszystkich danych
+zostanie wyokrzystana tylko jedna strona na taśmę.
+
+## Zużycie pamięci
+
+Zużywana pamięć w programie jest stała, jak można zaobserwować
+na poniższych danych z programu `valgrind --tool=massif`.
+
+Dla ilości danych mniejszych niż taśma:
+
+![Mała ilość rekordów](../res/visualizer_small.png)
+
+Dla ilości danych na 2 strony:
+
+![Średnia ilość rekordów](../res/visualizer_medium.png)
+
+Dla ilości danych na wiele stron:
+
+![Duża ilość rekordów](../res/visualizer_big.png)
+
+Jak widać, ilość zużytej pamięci operacyjnej nie przekracza
+80KB (czasem przekracza - zaalokowany dodatkowy element dla przyspieszenia algorytmu).
+
+# Podsumowanie
+
+Projekt pozwolił na zrozumienie jak wielkie pliki
+są odczytywane z dysku, oraz jak zaimplementować
+w prosty sposób własny sposób na zapis danych tak,
+aby nie zużywać za dużo pamięci operacyjnej.
+Wyniki eksperymentu są zgodne z oczekiwaniami
+rozważanymi na poziomie teoretycznym jeśli chodzi o ilość operacji dyskowych, 
+oraz zużycie pamięci było stałe, więc zwiększanie liczby
+rekordów nie zwiększa ilości zużywanej pamięci operacyjnej. 
+Liczba operacji IO zwiększa się proporcjonalnie do zwiększania
+współczynnika blokowania, ale współczynnik nie ma wpływu na ilość faz algorytmu.
