@@ -88,8 +88,7 @@ void distribute(Tape *mainTape, Tape *tape1, Tape *tape2) {
         } else {
             tape2->add(cylinder->base, cylinder->height);
         }
-        lastCylinder->base = cylinder->base;
-        lastCylinder->height = cylinder->height;
+        *lastCylinder = *cylinder;
 
         *cylinder = *mainTape->next();
     }
