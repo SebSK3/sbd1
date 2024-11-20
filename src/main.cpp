@@ -110,6 +110,8 @@ int main() {
 
             mainTape->loads = 0;
             mainTape->saves = 0;
+        } else if (input == "-1") {
+            break;
         }
 
         sorting::sort(mainTape);
