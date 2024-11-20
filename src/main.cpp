@@ -50,16 +50,29 @@ int main() {
             mainTape->resetPage();
             uint num = 1;
             std::cin >> num;
-            int base, height;
+            int base, height, series = 0;
+            Cylinder *cyl = new Cylinder();
+            Cylinder *lastCyl = new Cylinder();
+            cyl->clear();
+            lastCyl->clear();
             for (int i = 0; i < num * 2; i++) {
                 int randomNumber = std::rand() % 9999 + 1;
                 if (i % 2 == 1) {
                     base = randomNumber;
                 } else {
                     height = randomNumber;
+                    cyl->base = base;
+                    cyl->height = height;
+                    if (lastCyl->exists() && *cyl < *lastCyl)
+                        series++;
+                    *lastCyl = *cyl;
                     mainTape->add(base, height);
                 }
             }
+            mainTape->save();
+            std::cout << "SERIES: " << series << std::endl;
+            delete cyl;
+            delete lastCyl;
             mainTape->goToStart();
 
             mainTape->loads = 0;

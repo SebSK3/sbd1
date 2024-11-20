@@ -2,21 +2,21 @@
 #include "tape.hpp"
 namespace sorting {
 
-bool endOfRun(Tape *mainTape, Tape *tape) {
+void endOfRun(Tape *mainTape, Tape *tape) {
     if (tape->isAtFileEnd()) {
-        return true;
+        return;
     }
     Cylinder *lastCylinder = new Cylinder();
-    bool singleSerie = true;
+    Cylinder *cylinder = new Cylinder();
     *lastCylinder = *tape->getCurrentRecord();
-    while (!tape->isAtFileEnd() && (*tape->getCurrentRecord() >= *lastCylinder)) {
-        singleSerie = singleSerie && *tape->getCurrentRecord() >= *lastCylinder;
+    *cylinder = *tape->getCurrentRecord();
+    while (!tape->isAtFileEnd() && (*cylinder >= *lastCylinder)) {
         *lastCylinder = *tape->getCurrentRecord();
-        mainTape->add(tape->getCurrentRecord()->base, tape->getCurrentRecord()->height);
-        tape->next();
+        mainTape->add(cylinder->base, cylinder->height);
+        *cylinder = *tape->next();
     }
+    delete cylinder;
     delete lastCylinder;
-    return singleSerie;
 }
 
 bool merge(Tape *mainTape, Tape *tape1, Tape *tape2) {
@@ -34,6 +34,7 @@ bool merge(Tape *mainTape, Tape *tape1, Tape *tape2) {
     lastCylinder2->clear();
     cylinder1->clear();
     cylinder2->clear();
+    int countSeries = 0;
     bool tape1Finished = false, tape2Finished = false;
     while (!tape1->isAtFileEnd() || !tape2->isAtFileEnd()) {
         *cylinder1 = *tape1->getCurrentRecord();
@@ -48,13 +49,15 @@ bool merge(Tape *mainTape, Tape *tape1, Tape *tape2) {
         }
 
         // Handle end of run
-        if (*cylinder1 < *lastCylinder1) {
-            endOfRun(mainTape, tape1);
+        if (lastCylinder1->exists() && *cylinder1 < *lastCylinder1) {
+            sorted = false;
+            endOfRun(mainTape, tape2);
             lastCylinder1->clear();
             lastCylinder2->clear();
             continue;
-        } else if (*cylinder2 < *lastCylinder2) {
-            endOfRun(mainTape, tape2);
+        } else if (lastCylinder2->exists() && *cylinder2 < *lastCylinder2) {
+            sorted = false;
+            endOfRun(mainTape, tape1);
             lastCylinder1->clear();
             lastCylinder2->clear();
             continue;
@@ -111,7 +114,7 @@ void distribute(Tape *mainTape, Tape *tape1, Tape *tape2) {
         if (!cylinder->exists())
             break;
 
-        if (*cylinder < *lastCylinder) {
+        if (lastCylinder->exists() && *cylinder < *lastCylinder) {
             tapeSwitch = !tapeSwitch;
         }
 
