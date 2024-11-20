@@ -118,8 +118,6 @@ Plik załadowany, po czym wprowadzona komenda `dump`:
 
 ```
 > file
-Loads: 25
-Writes: 16
 > dump
 3.14159
 25.1327
@@ -143,17 +141,49 @@ T &= \frac{4N\lceil \log_2 r\rceil}{b} \\
 
 gdzie r - liczba serii
 
-Dla wielkości strony: TODO: 
+Dla wielkości strony 10 rekordów:
 
-| N | Liczba serii | IO | Fazy | Teor. IO | Teor. fazy |
-| :-: | :-: | :-: | :-: | :-: | :-: |
-| 10 | 5 | 12 | 2 | 12 | 3 |
+```{r, echo = FALSE}
+data <- read.csv("b10.csv", header = TRUE)
+data$"Teor.IO" <- (4*data$N*ceiling(log2(data$Serie)))/10
+data$"Teor.Fazy" <- ceiling(log2(data$Serie))
 
-Dla wielkości strony: TODO:
+library(knitr)
+library(ggplot2)
+kable(data, align = 'c')
 
-| N | Liczba serii | IO | Fazy | Teor. IO | Teor. fazy |
-| :-: | :-: | :-: | :-: | :-: | :-: |
-| 10 | 5 | 12 | 2 | 12 | 3 |
+ggplot(data, aes(x = N, y = IO)) +
+  geom_point(color = "blue", size = 3) +
+  geom_line(color = "red", linetype = "dashed") +
+  labs(
+    title = "Liczba operacji IO dla b=10",
+    x = "N",
+    y = "Operacje dyskowe"
+  ) +
+  scale_y_continuous(labels = scales::label_comma()) +
+  theme_minimal()
+```
+Dla wielkości strony 100 rekordów:
+```{r, echo = FALSE}
+data <- read.csv("b100.csv", header = TRUE)
+data$"Teor.IO" <- (4*data$N*ceiling(log2(data$Serie)))/10
+data$"Teor.Fazy" <- ceiling(log2(data$Serie))
+
+library(knitr)
+library(ggplot2)
+kable(data, align = 'c')
+
+ggplot(data, aes(x = N, y = IO)) +
+  geom_point(color = "blue", size = 3) +
+  geom_line(color = "red", linetype = "dashed") +
+  labs(
+    title = "Liczba operacji IO dla b=100",
+    x = "N",
+    y = "Operacje dyskowe"
+  ) +
+  scale_y_continuous(labels = scales::label_comma()) +
+  theme_minimal()
+```
 
 Jak widać, dla większej ilości strony, tym rzadziej ją wymieniamy,
 przez co znacznie spadają ilości operacji dyskowych.
@@ -166,20 +196,20 @@ zostanie wyokrzystana tylko jedna strona na taśmę.
 Zużywana pamięć w programie jest stała, jak można zaobserwować
 na poniższych danych z programu `valgrind --tool=massif`.
 
-Dla ilości danych mniejszych niż taśma:
+Dla 1000 rekordów:
 
 ![Mała ilość rekordów](../res/visualizer_small.png)
 
-Dla ilości danych na 2 strony:
+Dla 5000 rekordów:
 
 ![Średnia ilość rekordów](../res/visualizer_medium.png)
 
-Dla ilości danych na wiele stron:
+Dla 10000 rekordów:
 
 ![Duża ilość rekordów](../res/visualizer_big.png)
 
 Jak widać, ilość zużytej pamięci operacyjnej nie przekracza
-80KB (czasem przekracza - zaalokowany dodatkowy element dla przyspieszenia algorytmu).
+80KB.
 
 # Podsumowanie
 
@@ -188,8 +218,8 @@ są odczytywane z dysku, oraz jak zaimplementować
 w prosty sposób własny sposób na zapis danych tak,
 aby nie zużywać za dużo pamięci operacyjnej.
 Wyniki eksperymentu są zgodne z oczekiwaniami
-rozważanymi na poziomie teoretycznym jeśli chodzi o ilość operacji dyskowych, 
+rozważanymi na poziomie teoretycznym jeśli chodzi o ilość operacji dyskowych,
 oraz zużycie pamięci było stałe, więc zwiększanie liczby
-rekordów nie zwiększa ilości zużywanej pamięci operacyjnej. 
+rekordów nie zwiększa ilości zużywanej pamięci operacyjnej.
 Liczba operacji IO zwiększa się proporcjonalnie do zwiększania
 współczynnika blokowania, ale współczynnik nie ma wpływu na ilość faz algorytmu.
