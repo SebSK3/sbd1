@@ -1,6 +1,24 @@
 #pragma once
 #include "tape.hpp"
 namespace sorting {
+
+bool endOfRun(Tape *mainTape, Tape *tape) {
+    if (tape->isAtFileEnd()) {
+        return true;
+    }
+    Cylinder *lastCylinder = new Cylinder();
+    bool singleSerie = true;
+    *lastCylinder = *tape->getCurrentRecord();
+    while (!tape->isAtFileEnd() && (*tape->getCurrentRecord() >= *lastCylinder)) {
+        singleSerie = singleSerie && *tape->getCurrentRecord() >= *lastCylinder;
+        *lastCylinder = *tape->getCurrentRecord();
+        mainTape->add(tape->getCurrentRecord()->base, tape->getCurrentRecord()->height);
+        tape->next();
+    }
+    delete lastCylinder;
+    return singleSerie;
+}
+
 bool merge(Tape *mainTape, Tape *tape1, Tape *tape2) {
     bool sorted = true;
     mainTape->resetPage();
@@ -28,6 +46,20 @@ bool merge(Tape *mainTape, Tape *tape1, Tape *tape2) {
             tape2Finished = true;
             break;
         }
+
+        // Handle end of run
+        if (*cylinder1 < *lastCylinder1) {
+            endOfRun(mainTape, tape1);
+            lastCylinder1->clear();
+            lastCylinder2->clear();
+            continue;
+        } else if (*cylinder2 < *lastCylinder2) {
+            endOfRun(mainTape, tape2);
+            lastCylinder1->clear();
+            lastCylinder2->clear();
+            continue;
+        }
+
         if (*cylinder1 > *cylinder2) {
             mainTape->add(cylinder2->base, cylinder2->height);
             if (*lastCylinder2 > *cylinder2) {
