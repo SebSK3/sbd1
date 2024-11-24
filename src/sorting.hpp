@@ -141,12 +141,28 @@ void sort(Tape *mainTape) {
     bool sorted = false;
     int phases = 0;
     while (!sorted) {
+#ifdef DEBUG
+        fgetc(stdin);
+#endif
         phases++;
         distribute(mainTape, tape1, tape2);
+#ifdef DEBUG
+        std::cout << "Main Tape:\n";
+        mainTape->dumpFile();
+        std::cout << "(DISTRIBUTED) Tape1:\n";
+        tape1->dumpFile();
+        std::cout << "(DISTRIBUTED) Tape2:\n";
+        tape2->dumpFile();
+#endif
         sorted = merge(mainTape, tape1, tape2);
+#ifdef DEBUG
+        std::cout << "(MERGED) Main Tape:\n";
+        mainTape->dumpFile();
+#endif
     }
     std::cout << "Loads: " << mainTape->loads + tape1->loads + tape2->loads << std::endl;
     std::cout << "Writes: " << mainTape->saves + tape1->saves + tape2->saves << std::endl;
+    std::cout << "IO: " << mainTape->loads + tape1->loads + tape2->loads +mainTape->saves + tape1->saves + tape2->saves << std::endl;
     std::cout << "Phases: " << phases << std::endl;
     mainTape->loads = 0;
     mainTape->saves = 0;

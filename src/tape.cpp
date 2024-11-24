@@ -140,6 +140,8 @@ void Tape::goToStart() {
 bool Tape::isAtFileEnd() { return !page[current_record]->exists(); }
 
 void Tape::dumpFile() {
+    int rememberLoads = loads;
+    int rememberSaves = saves;
     uint remember_page = current_page;
     uint remember_record = current_record;
     current_record = 0;
@@ -152,6 +154,7 @@ void Tape::dumpFile() {
     }
     current_page = remember_page;
     current_record = remember_record;
+    loads = rememberLoads;
 }
 
 #ifdef DEBUG
