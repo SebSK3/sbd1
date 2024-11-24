@@ -145,6 +145,8 @@ Dla wielkości strony 10 rekordów:
 
 ```{r, echo = FALSE}
 data <- read.csv("b10.csv", header = TRUE)
+data$Zapisy <- (data$IO/2)
+data$Odczyty <- (data$IO/2)
 data$"Teor.IO" <- (4*data$N*ceiling(log2(data$Serie)))/10
 data$"Teor.Fazy" <- ceiling(log2(data$Serie))
 
@@ -166,6 +168,8 @@ ggplot(data, aes(x = N, y = IO)) +
 Dla wielkości strony 100 rekordów:
 ```{r, echo = FALSE}
 data <- read.csv("b100.csv", header = TRUE)
+data$Zapisy <- (data$IO/2)
+data$Odczyty <- (data$IO/2)
 data$"Teor.IO" <- (4*data$N*ceiling(log2(data$Serie)))/10
 data$"Teor.Fazy" <- ceiling(log2(data$Serie))
 
